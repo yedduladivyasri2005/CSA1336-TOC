@@ -1,0 +1,49 @@
+Aim:
+To write a C program to simulate a Non-Deterministic Finite Automata. 
+
+Program:
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#define STATES 3
+#define ALPHABET_SIZE 2
+int transitions[STATES][ALPHABET_SIZE][STATES] = {
+    {{1, 2}, {0, 1}}, 
+    {{2, -1}, {-1, -1}}, 
+    {{}, {}} 
+};
+bool isAccepted(char *input) {
+    int currentState = 0;
+    int inputLength = strlen(input);
+    for (int i = 0; i < inputLength; i++) {
+        char c = input[i] - '0'; 
+        int *possibleStates = transitions[currentState][c];
+        if (possibleStates[0] == -1)
+            return false; 
+        bool found = false;
+        for (int j = 0; possibleStates[j] != -1; j++) {
+            if (possibleStates[j] != -1) {
+                currentState = possibleStates[j];
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            return false; 
+    }
+    return currentState == STATES - 1;
+}
+int main() {
+    char input[100];
+    printf("Enter input string (0s and 1s only): ");
+    scanf("%s", input);
+
+    if (isAccepted(input))
+        printf("String is accepted by the NFA.\n");
+    else
+        printf("String is not accepted by the NFA.\n");
+    return 0;
+}
+
+Result:
+C program for to simulate a Non-Deterministic Finite Automata was successfully.
